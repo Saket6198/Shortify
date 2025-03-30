@@ -3,6 +3,7 @@ package main
 import (
 	"crypto/sha256"
 	"encoding/hex"
+	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
@@ -56,19 +57,47 @@ func example(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("Request received")
 }
 
-func UnHash(w http.ResponseWriter, r *http.Request){	// w is used to write responses back by appending to the header
-	id := 
+func ShortUrlHandler(w http.ResponseWriter, r *http.Request){	// w is used to write responses back by appending to the header
+	var data struct {	// struct to hold the data from the request body
+		URL string `json:"url"`
+	}
+	err := json.NewDecoder(r.Body).Decode(&data)
+	if err != nil {
+		http.Error(w, "Invalid Request!", http.StatusBadRequest)
+		return
+	}
+	shortUrl := CreateUrl(data.URL)
+	// response := map[string]string{"shortened_url": shortUrl}
+	// jsonResponse, err := json.Marshal(response)
+	// if err != nil {
+	// 	http.Error(w, "Error generating response", http.StatusInternalServerError)
+	// 	return
+	// }
+	// w.Header().Set("Content-Type", "application/json")
+	// w.WriteHeader(http.StatusOK)
+	// w.Write(jsonResponse)
+	
+	response := struct {
+		ShortUrl string `json:"shortened_url"`
+	}{ShortUrl: shortUrl}
+	w.Header().Set("Content-Type", "application/json")
+	err = json.NewEncoder(w).Encode(response)
+	if err != nil {
+		http.Error(w, "Error generating Json Response", http.StatusBadRequest)
+	}
 }
+
 
 func main(){
 	fmt.Println("Starting Url Shortener...")
 	fmt.Println("Server starting on port 5000")
 	http.HandleFunc("/", example)
+	http.HandleFunc("/shorten", ShortUrlHandler)
 	err := http.ListenAndServe(":5000", nil)
 	if err != nil {
 		log.Fatalf("Error starting server: %v", err)
 	}
 	
 	// fmt.Println("Hashing done", hashUrl("www.google.com"))
-
+	
 }
