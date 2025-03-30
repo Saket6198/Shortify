@@ -4,7 +4,7 @@ import (
 	"time"
 )
 type Url struct {
-	Id string `json:"id`
+	Id string `json:"id"`
 	OriginalUrl string `json:"original_url"`
 	ShortenedUrl string `json:"shortened_url"`
 	CreationDate time.Time `json:"creation_date"`
