@@ -3,6 +3,9 @@
 ![Go](https://img.shields.io/badge/Go-1.20%2B-00ADD8?logo=go&logoColor=white) 
 ![License](https://img.shields.io/badge/License-MIT-blue) 
 
+![image](https://github.com/user-attachments/assets/71ff80ff-6b79-4aa1-922b-fab7e6104839)
+
+
 A simple URL shortening service built in Go. This project generates concise URLs for long web addresses and redirects users from the shortened URL to the original URL using the **latest and industry grade SHA-256 Encryption for checksums which allows for 0% chance of collision unlike previous methods**. It demonstrates a basic REST API design, modular file structure, error handling, and logging.
 
 ## Table of Contents
