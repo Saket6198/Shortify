@@ -16,8 +16,7 @@ A simple URL shortening service built in Go. This project generates concise URLs
 - [System Design Overview](#system-design-overview)
 - [Error Handling & Logging](#error-handling--logging)
 - [Contributing](#contributing)
-- [License](#license)
-- [Acknowledgements](#acknowledgements)
+
 
 ## File Structure
 ```
