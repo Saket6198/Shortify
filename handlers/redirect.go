@@ -11,7 +11,7 @@ import (
 func Geturl(id string) (models.Url, error){
 	url, exists := models.UrlDb[id]
 	if !exists {
-		return models.Url{}, fmt.Errorf("Url not found")
+		return models.Url{}, fmt.Errorf("url not found")
 	}
 	return url, nil
 
