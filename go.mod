@@ -1,3 +1,3 @@
-module github.com/saket6198/GoUrlShortner
+module url-shortener
 
 go 1.24.1
