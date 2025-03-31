@@ -8,4 +8,5 @@ import (
 func RegisterRoutes() {
 	http.HandleFunc("/shorten", handlers.ShortUrlHandler)
 	http.HandleFunc("/redirect/", handlers.RedirectUrlHandler)
+	http.HandleFunc("/clear", handlers.ClearHandler)
 }
