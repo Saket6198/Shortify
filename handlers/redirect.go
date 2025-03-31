@@ -1,19 +1,26 @@
 package handlers
 
 import (
-	"net/http"
-	"log"	
+	"context"
 	"fmt"
-	"url-shortener/models"
-	
+	"log"
+	"net/http"
+	"url-shortener/utils"
 )
 
-func Geturl(id string) (models.Url, error){
-	url, exists := models.UrlDb[id]
-	if !exists {
-		return models.Url{}, fmt.Errorf("url not found")
+func Geturl(id string) (string, error){
+	// url, exists := models.UrlDb[id]
+	ctx := context.Background()
+	url, err := utils.RedisClient.Get(ctx, id).Result()
+	if err != nil {
+		return "", fmt.Errorf("error retrieving URL from Redis: %v", err)
 	}
 	return url, nil
+
+	// if !exists {
+	// 	return models.Url{}, fmt.Errorf("url not found")
+	// }
+	// return url, nil
 
 }
 
@@ -24,7 +31,7 @@ func RedirectUrlHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Url not found", http.StatusNotFound)
 		return
 	}
-	log.Printf("Redirecting to %s", url.OriginalUrl)
-	http.Redirect(w, r, url.OriginalUrl, http.StatusFound)
+	log.Printf("Redirecting to %s", url)
+	http.Redirect(w, r, url, http.StatusFound)
 
 }
