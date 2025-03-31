@@ -1,4 +1,4 @@
-# GoShortify - A Golang Powered Url Shortner
+# GoShortify - A Golang and Redis Powered Url Shortner
 
 ![Go](https://img.shields.io/badge/Go-1.20%2B-00ADD8?logo=go&logoColor=white) 
 ![License](https://img.shields.io/badge/License-MIT-blue) 
@@ -6,7 +6,7 @@
 ![image](https://github.com/user-attachments/assets/71ff80ff-6b79-4aa1-922b-fab7e6104839)
 
 
-A simple URL shortening service built in Go. This project generates concise URLs for long web addresses and redirects users from the shortened URL to the original URL using the **latest and industry grade SHA-256 Encryption for checksums which allows for 0% chance of collision unlike previous methods**. It demonstrates a basic REST API design, modular file structure, error handling, and logging.
+A URL shortening service built in Go that generates concise URLs for long web addresses and utilizes **Redis for low-latency caching and ultra-fast performance**. It redirects users from the shortened URL to the original URL using the **latest industry-grade SHA-256 encryption for checksums, ensuring a 0% chance of collision compared to previous methods**. The service demonstrates a basic REST API design, a modular file structure, robust error handling, and comprehensive logging.
 
 ## Table of Contents
 - [Project Structure](#project-structure)
@@ -26,13 +26,15 @@ A simple URL shortening service built in Go. This project generates concise URLs
 url-shortener/
 ├── handlers/
 │   ├── shorten.go       # Handles POST /shorten request
-│   └── redirect.go      # Handles GET /redirect/{id} request
+│   ├── redirect.go      # Handles GET /redirect/{id} request
+│   ├── clear.go         # Handles DELETE /clear request (flush Redis)
 ├── models/
 │   └── url.go           # Contains the Url struct and in-memory storage
 ├── routes/
 │   └── routes.go        # Registers HTTP routes and associates endpoints with handlers
 ├── utils/
-│   └── hash.go          # Contains utility functions for hashing URLs
+│   ├── hash.go          # Contains utility functions for hashing URLs
+│   ├── redis.go         # Initializes and manages Redis connection
 ├── main.go              # Application entry point
 └── go.mod               # Go module file
 ```
@@ -41,15 +43,17 @@ url-shortener/
 ## Features
 
 - **URL Shortening**: Generate a unique short URL for any provided long URL.
+- **SHA-256 Hashing**: Ensures 0% chance of collision for short URLs.
 - **Redirection**: Redirect users from the short URL to the original URL.
-- **REST API**: Exposes endpoints for URL creation and redirection.
+- **REST API**: Exposes endpoints for URL creation, redirection, and clearing data.
 - **Modular Design**: Well-organized file structure with separate packages for models, handlers, utilities, and routes.
 - **Error Handling**: Comprehensive error responses for invalid input and missing URLs.
-- **Logging**: Logs significant events such as redirections and errors.
+- **Logging**: Logs significant events such as redirections, errors, and Redis operations.
 
 ## Prerequisites
 
 - [Go](https://golang.org/dl/) version 1.16 or higher
+- [Redis](redis.io) installed and running
 
 ## Installation
 
@@ -66,7 +70,21 @@ url-shortener/
     go mod init url-shortener
     go mod tidy
     ```
+    
+3. **Start Redis:**
+   
+   ![image](https://github.com/user-attachments/assets/b3ef0619-d3c0-406e-921b-1ad0a3d9f464)
 
+   If you are using WSL on windows or linux , install and start redis with:
+    ```bash
+    sudo apt-get install redis-server
+    redis-server
+    ```
+    Ensure the port 6379(default by redis) is open, else run
+   ```bash
+   netstat -aonb | findstr 6379
+   ```
+   and kill the pid and restart redis.    
 ## Usage
 
 1. **Run the Application:**
@@ -109,6 +127,14 @@ url-shortener/
 - **Response**: The service redirects to the original URL.
 - ![image](https://github.com/user-attachments/assets/5f20e2c4-5113-46c8-bc35-7fa16418151b)
 
+### DELETE /clear
+
+- **Description:** Clears all stored URL mappings from Redis.
+
+- **Response**:
+    - Success: 200 OK - "Cleared all data from Redis"
+
+    - Failure: 500 Internal Server Error
 
 ## Data Model
 
@@ -143,6 +169,7 @@ type Url struct {
     
     - Routes: Centralizes route registration for clean API definitions.
 
+
 2. REST API Design:
   The API exposes two main endpoints:
   
@@ -150,11 +177,17 @@ type Url struct {
     
     - GET /redirect/{id}: Redirects to the original URL using the provided short URL ID.
 
-3. Scalability Considerations:
-  While the current implementation uses in-memory storage (making it volatile), the modular design allows for easy integration with persistent storage (e.g., SQL or NoSQL databases) when needed.
+
+3. Redis for Storage:
+URLs are stored in Redis for fast lookup and persistence.
+    - Redis SET and GET commands retrieve URLs quickly.
+
+    - The /clear route flushes all stored URLs when needed.
+
 
 4. Hashing Strategy:
   The service uses SHA-256 to generate a hash for the given URL and truncates it to create a unique identifier. This minimizes the risk of collisions while keeping the URL concise.
+
 
 ## Error Handling & Logging
 - Error Handling:
