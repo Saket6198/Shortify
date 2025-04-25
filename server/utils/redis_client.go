@@ -11,9 +11,10 @@ var RedisClient *redis.Client	// create a global obj of the class redis
 
 func InitRedis(){
 	RedisClient = redis.NewClient(&redis.Options{
-		Addr: "localhost:6379",
-		Password: "",
-		DB: 0, // use default DB
+		Addr:     "redis-16367.crce182.ap-south-1-1.ec2.redns.redis-cloud.com:16367",
+		Username: "default",
+		Password: "Rt3s9TPh2Yu90anDqsRa5TrApmInv3SX",
+		DB:       0,
 	})
 	ctx := context.Background()
 	_, err := RedisClient.Ping(ctx).Result()

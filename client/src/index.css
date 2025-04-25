@@ -1,4 +1,4 @@
-:root {
+/* :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
@@ -47,7 +47,7 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
-@custom-variant dark (&:is(.dark *));
+@custom-variant dark (&:is(.dark *)); */
 
 /* a {
   font-weight: 500;
@@ -103,7 +103,7 @@ button:focus-visible {
   }
 } */
 
-@theme inline {
+/* @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -182,4 +182,10 @@ button:focus-visible {
   body {
     @apply bg-background text-foreground;
   }
+} */
+@import "tailwindcss";
+:root{
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
 }
