@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"log"
 	"time"
-	"url-shortener/utils"
+	"github.com/saket6198/url-shortener/utils"
 )
 
 func CreateUrl(url string) string {	 // create a new url(call the hash vaala fn) and store it in the database(local map)

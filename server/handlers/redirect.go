@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"url-shortener/utils"
+	"github.com/saket6198/url-shortener/utils"
 )
 
 func Geturl(id string) (string, error){

@@ -5,7 +5,7 @@ import (
 	"log"
 	"fmt"
 	"net/http"
-	"url-shortener/utils"
+	"github.com/saket6198/url-shortener/utils"
 )
 
 func ClearHandler(w http.ResponseWriter, r *http.Request){

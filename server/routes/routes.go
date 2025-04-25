@@ -2,7 +2,7 @@ package routes
 
 import (
 	"net/http"
-	"url-shortener/handlers"
+	"github.com/saket6198/url-shortener/handlers"
 )
 
 func RegisterRoutes() {

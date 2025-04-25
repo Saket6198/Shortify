@@ -3,9 +3,9 @@ package main
 import (
 	"fmt"
 	"log"
-	"url-shortener/utils"
+	"github.com/saket6198/url-shortener/utils"
 	"net/http"
-	"url-shortener/routes"
+	"github.com/saket6198/url-shortener/routes"
 )
 
 
