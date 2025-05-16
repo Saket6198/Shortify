@@ -19,8 +19,6 @@ func CreateUrl(url string) string {	 // create a new url(call the hash vaala fn)
 		fmt.Println("Error storing URL in Redis:", err)
 		return ""
 	}
-
-
 	
 	// id := shortUrl
 	// models.UrlDb[id] = models.Url{
